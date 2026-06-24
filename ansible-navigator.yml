@@ -1,0 +1,3 @@
+ansible-navigator:
+  execution-environment:
+    image: registry.redhat.io/ansible-automation-platform-27/ee-supported-rhel9:latest
