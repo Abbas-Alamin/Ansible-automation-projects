@@ -1,0 +1,8 @@
+- name: install the httpd pachage
+  hosts: all
+  tasks: 
+    - ansible.builtin.dnf:
+        name: httpd
+        state: latest
+
+        #to make sure that the repolist we maked is working well
