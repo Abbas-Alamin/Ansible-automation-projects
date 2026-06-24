@@ -1,0 +1,27 @@
+---       
+- name: repolist
+  hosts: all
+  tasks:  
+    - name: mount the ISO
+      ansible.builtin.mount: 
+        path: /mnt
+        src: /dev/sr0
+        fstype: iso9660
+        state: mounted
+    
+    - name: AppStream
+      ansible.builtin.yum_repository:
+         name: AppStream
+         description: AppStream YUM repo
+         baseurl: file:///mnt/AppStream
+         enabled: yes
+         gpgcheck: no
+          
+          
+    - name: BaseOS
+      ansible.builtin.yum_repository:
+         name: BaseOS
+         description: BaseOS YUM repo
+         baseurl: file:///mnt/BaseOS
+         enabled: yes
+         gpgcheck: no
