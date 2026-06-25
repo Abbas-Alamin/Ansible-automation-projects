@@ -13,11 +13,11 @@ Passwordless Authentication: Distributed the public key to all target managed no
     ssh-copy-id devops@node2
     ssh-copy-id devops@node3`
 Repository Structure & Core Files
-​inventory.ini: Lists the managed hosts (node1, node2, node3) utilizing local hostname resolution.
-​ansible.cfg: Sets the default inventory paths, defines the non-root remote user (devops), and configures secure privilege escalation (become=true).
-​ansible-navigator.yml: Defines the specific containerized Execution Environment (EE) images to maintain standard Red Hat compliance.
-​setup-local-repo.yml: A playbook that automatically mounts the RHEL ISO media image to /mnt and configures local AppStream and BaseOS yum repositories using the native ansible.builtin.mount and ansible.builtin.yum_repository modules.
-​install-httpd.yml: A playbook that utilizes the modern ansible.builtin.dnf module to install and verify the latest Apache HTTP package across all nodes, testing the health of our local repositories.
+​inventory.ini: Lists the managed hosts (`node1, node2, node3`) utilizing local hostname resolution.
+`​ansible.cfg`: Sets the default inventory paths, defines the non-root remote user (`devops`), and configures secure `privilege escalation` (`become=true`).
+`​ansible-navigator.yml`: Defines the specific containerized Execution Environment (EE) images to maintain standard Red Hat compliance.
+`​setup-local-repo.yml`: A playbook that automatically mounts the RHEL ISO media image to `/mnt` and configures local AppStream and BaseOS yum repositories using the native `ansible.builtin.mount `and `ansible.builtin.yum_repository` modules.
+`​install-httpd.yml`: A playbook that utilizes the modern `ansible.builtin.dnf` module to install and verify the latest Apache HTTP package across all nodes, testing the health of our local repositories.
 ​How to Run the Portfolio
 ​To execute the automation workflow using the modern Ansible Navigator interface, run:
   `ansible-navigator run setup-local-repo.yml -m stdout
