@@ -1,0 +1,4 @@
+lin_srv:
+    - httpd
+    - mariadb
+    - vsftpd
