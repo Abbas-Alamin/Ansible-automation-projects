@@ -1,0 +1,31 @@
+---                     
+- name: install packages and enable sevices and open firewall
+  hosts: all            
+  vars_files:           
+      - ./vars/input.yml
+  tasks:                
+  - name: Install the latest version of {{ lin_srv }}         
+    ansible.builtin.dnf:
+      name:             
+        - httpd         
+        - mariadb-server
+        - vsftpd        
+      state: latest     
+    register: pkg_result
+                        
+  - debug:              
+      var: pkg_result   
+                        
+  - name: Start services
+    ansible.builtin.service:                         
+      name: "{{ item }}"
+      enabled: yes      
+      state: started    
+    loop: "{{ lin_srv }}"                            
+                        
+  - name: Permanently enable                         
+    ansible.posix.firewalld:                         
+      service: https    
+      state: enabled    
+      permanent: true   
+      immediate: true
