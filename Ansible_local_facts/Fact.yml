@@ -1,0 +1,9 @@
+---
+- name: Install packages using deployed local facts
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Apache, vsftpd, and Samba from local facts
+      dnf:
+        name: "{{ ansible_local.custom.facts.lin_pkg }}"
+        state: latest
