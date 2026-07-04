@@ -1,0 +1,19 @@
+---
+- name: Check the existence of a file and create it if missing
+  hosts: all
+  become: true
+  tasks:
+    - name: Get stats of the FS object
+      ansible.builtin.stat:
+        path: /etc/test.cfg
+      register: sym
+
+    - name: Print a debug message to inspect stat outputs
+      ansible.builtin.debug:
+        var: sym
+# you need to run the playbook before you write the third task to be able to know the fact you need to write in the 3rd task
+    - name: Create the file if it does not exist
+      ansible.builtin.file:
+        path: /etc/test.cfg
+        state: touch
+      when: sym.stat.exists == false
