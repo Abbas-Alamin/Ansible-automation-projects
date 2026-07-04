@@ -1,0 +1,14 @@
+---
+- name: Setup and deploy custom local facts
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure Ansible facts directory exists on managed nodes
+      file:
+        path: /etc/ansible/facts.d
+        state: directory
+
+    - name: Copy custom fact file to managed nodes
+      copy:
+        src: ./custom.fact
+        dest: /etc/ansible/facts.d/custom.fact
