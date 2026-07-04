@@ -1,7 +1,0 @@
----
-- name: Using facts in play
-  hosts: all
-  tasks:
-    - name: Show system network and distribution facts
-      debug:
-        msg: "The default IPv4 of {{ ansible_facts.hostname }} is {{ ansible_facts.default_ipv4.address }} and the default distribution is {{ ansible_facts.distribution }}"
