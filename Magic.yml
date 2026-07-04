@@ -1,0 +1,10 @@
+---
+- name: Conditional package deployment based on host groups
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Apache HTTPD only on database servers
+      dnf:
+        name: httpd
+        state: latest
+      when: inventory_hostname in groups["db"]
