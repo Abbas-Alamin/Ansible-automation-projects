@@ -1,0 +1,93 @@
+---
+- name: project
+  hosts: node3
+  handlers:
+    - name: restart ssh
+      service:
+        name: sshd
+        state: restarted
+
+    - name: restart firewalld
+      service:
+       name: firewalld
+       state: restarted
+    
+  tasks:
+    - name: install firewalld package
+      dnf:
+        name: firewalld
+        state: latest    
+    
+    - name: start the firewalld sevice
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+        
+    - name: tell selinux about new ssh port 8991
+      seport:
+        ports: 8991
+        proto: tcp
+        setype: ssh_port_t
+        state: present
+      notify:
+        - restart firewalld
+    
+    - name: do basic configurations on firewall
+      firewalld:
+        state: "{{ item.state }}"
+        port: "{{ item.port }}"
+        immediate: yes
+        permanent: yes
+      loop:
+        - state: enabled 
+          port: 8991/tcp
+        - state: enabled 
+          port: 123/udp 
+
+    - name: Make sure ssh is more secure
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        state: present
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        validate: 'sshd -T -f %s'
+      loop:
+        - regexp: "^PasswordAuthentication"
+          line: "PasswordAuthentication no"
+        - regexp: "^PermitRootLogin"
+          line: "PermitRootLogin no"
+        - regexp: "^Port"
+          line: "Port 8991"
+      notify: 
+        - restart ssh
+    
+    - name: create user abbas
+      user:
+        name: abbas
+        state: present
+    
+    - name: modify abbas user privs
+      lineinfile:
+        path: /etc/sudoers.d/abbas
+        state: present
+        create: yes
+        mode: '0440'
+        line: 'abbas ALL=(ALL) NOPASSWD: ALL'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Change file ownership, group and permissions
+      file:
+        path: /etc/ssh/sshd_config
+        mode: '0600'
+
+    - name: install autoupdate package
+      dnf:
+        name: dnf-automatic
+        state: present
+
+    - name: setup the service
+      service:
+        name: dnf-automatic-install.timer
+        state: started
+        enabled: yes
