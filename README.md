@@ -51,7 +51,7 @@ ansible-navigator run install-httpd.yml -m stdout`
 ### 3️⃣ System Auditing & Idempotency Management
 * **Main Playbook:** `register.yml`
 * **What it does:** Focuses on infrastructure state auditing. It utilizes the `ansible.builtin.stat` module to capture file system properties into a runtime variable (`register: sym`). By logging and outputting this variable via debugging, the playbook conditionally triggers file touch actions (`ansible.builtin.file`) using specific execution logic (`when: sym.stat.exists == false`). This ensures protection against unintended overwrites or configuration drifts.
-  ### 4️⃣ Dynamic Conditioning (Magic Variables)
+### 4️⃣ Dynamic Conditioning (Magic Variables)
 * **Main Playbook:** `Magic.yml`
 * **What it does:** Demonstrates absolute architectural targeting precision. Using conditional logic based on Ansible magic variables (`when: inventory_hostname in groups["db"]`), the control engine automatically queries the inventory layout at runtime, ensuring that group-specific playbooks execute only on eligible nodes.
 ### 5️⃣ Security Hardening & Infrastructure Protection (FINAL PROJECT)
