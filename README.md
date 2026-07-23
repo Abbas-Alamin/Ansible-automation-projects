@@ -19,8 +19,7 @@ The managed infrastructure mimics a real-world multi-tier application environmen
 ## Repository Structure & Core Files:
 ​`inventory.ini`: Lists the managed hosts (`node1, node2, node3`) utilizing local hostname resolution.
 `​ansible.cfg`: Sets the default inventory paths, defines the non-root remote user (`devops`), and configures secure `privilege escalation` (`become=true`). 
-*Note on SSH Port Change:* Following the execution of the Security Hardening playbook, all target managed nodes switch their SSH listening port to 8991. To maintain seamless execution for subsequent automation runs, the ansible.cfg file is pre-configured with:
-> remote_port = 8991
+*Note on SSH Port Change:* Following the execution of the Security Hardening playbook, all target managed nodes switch their SSH listening port to 8991. To maintain seamless execution for subsequent automation runs, the ansible.cfg file is pre-configured with: remote_port = 8991
 `​ansible-navigator.yml`: Defines the specific containerized Execution Environment (EE) images to maintain standard Red Hat compliance.
 `​setup-local-repo.yml`: A playbook that automatically mounts the RHEL ISO media image to `/mnt` and configures local AppStream and BaseOS yum repositories using the native `ansible.builtin.mount `and `ansible.builtin.yum_repository` modules.
 `​install-httpd.yml`: A playbook that utilizes the modern `ansible.builtin.dnf` module to install and verify the latest Apache HTTP package across all nodes, testing the health of our local repositories.
